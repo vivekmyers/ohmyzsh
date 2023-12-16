@@ -5,3 +5,4 @@ function virtualenv_prompt_info(){
 
 # disables prompt mangling in virtual_env/bin/activate
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+$HOME/conda/bin/conda config --set changeps1 false
