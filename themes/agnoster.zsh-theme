@@ -237,6 +237,7 @@ prompt_virtualenv() {
   fi
   if [[ -n $env ]]; then
     color=#505090
+    #color=061
     prompt_segment $color $PRIMARY_FG
     print -Pn "$(basename $env)"
   fi
