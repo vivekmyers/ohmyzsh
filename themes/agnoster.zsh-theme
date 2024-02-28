@@ -88,8 +88,10 @@ prompt_end() {
 
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
-  if [[ "$USERNAME" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+  if [[ "$USERNAME" != "$DEFAULT_USER" ]]; then
     prompt_segment black default "%(!.%{%F{yellow}%}.)%n@%m"
+  else
+    prompt_segment black default "%(!.%{%F{yellow}%}.)@%m"
   fi
 }
 
@@ -217,7 +219,7 @@ prompt_hg() {
 
 # Dir: current working directory
 prompt_dir() {
-  prompt_segment blue $CURRENT_FG '%~'
+    prompt_segment blue black "%$(( ($COLUMNS-20) / 5 ))<..<%~%<<"
 }
 
 # Virtualenv: current working virtualenv
@@ -232,9 +234,10 @@ prompt_virtualenv() {
     env="$VIRTUAL_ENV"
   fi
 
-  if [[ -n "$VIRTUAL_ENV" && -n "$VIRTUAL_ENV_DISABLE_PROMPT" ]]; then
-    prompt_segment blue black "(${VIRTUAL_ENV:t:gs/%/%%})"
+  if [[ -n "$env" ]] && [[ "$env" == $(basename $PWD) ]]; then
+    env='.'
   fi
+
   if [[ -n $env ]]; then
     color=#505090
     #color=061
