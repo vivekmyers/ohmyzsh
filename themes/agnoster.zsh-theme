@@ -224,26 +224,29 @@ prompt_dir() {
 
 # Virtualenv: current working virtualenv
 prompt_virtualenv() {
-  local env='';
+  local envs=()
 
-  # if "$CONDA_DEFAULT_ENV" variable exists,
-  # then you are using conda to manage python virtual env
   if [[ -n "$CONDA_DEFAULT_ENV" ]]; then
-    env="$CONDA_DEFAULT_ENV"
-  elif [[ -n "$VIRTUAL_ENV" ]]; then
-    env="$VIRTUAL_ENV"
+    envs+=("$CONDA_DEFAULT_ENV")
+  fi
+  if [[ -n "$VIRTUAL_ENV" ]]; then
+    envs+=("$VIRTUAL_ENV")
   fi
 
-  if [[ -n "$env" ]] && [[ "$env" == $(basename $PWD) ]]; then
-    env='.'
-  fi
+  local color=#505090
 
-  if [[ -n $env ]]; then
-    color=#505090
-    #color=061
-    prompt_segment $color $PRIMARY_FG
-    print -Pn "$(basename $env)"
-  fi
+  for env in "${envs[@]}"; do
+    if [[ -n "$env" ]] && [[ "$env" == $(basename $PWD) ]]; then
+      env='.'
+    fi
+
+    if [[ -n $env ]]; then
+      prompt_segment $color $PRIMARY_FG
+      print -Pn "$(basename $env)"
+    fi
+
+    color=60
+  done
 }
 
 # Status:
