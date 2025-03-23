@@ -229,14 +229,18 @@ prompt_virtualenv() {
   if [[ -n "$CONDA_DEFAULT_ENV" ]]; then
     envs+=("$CONDA_DEFAULT_ENV")
   fi
-  if [[ -n "$VIRTUAL_ENV" ]]; then
-    envs+=("$VIRTUAL_ENV")
+  if [[ -n "$VIRTUAL_ENV_PROMPT" ]]; then
+    envs+=("$VIRTUAL_ENV_PROMPT")
   fi
 
   local color=#505090
 
   for env in "${envs[@]}"; do
-    if [[ -n "$env" ]] && [[ "$env" == $(basename $PWD) ]]; then
+
+    env=${env#*\(}
+    env=${env%\)*}
+
+    if [[ -n "$env" ]] && [[ "$(tolower <<< "$env")" == "$(tolower <<< "$(basename $PWD)")" ]]; then
       env='.'
     fi
 
